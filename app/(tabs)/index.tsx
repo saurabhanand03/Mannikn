@@ -41,18 +41,34 @@ export default function HomeScreen() {
             'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/CesiumMan/glTF-Binary/CesiumMan.glb',
             (gltf) => {
                 const mannequin = gltf.scene;
-                // Optional: scale or position the model
                 mannequin.scale.set(1, 1, 1);
-                scene.add(mannequin);
                 mannequin.position.set(0, -1, 0);
                 scene.add(mannequin);
+
+                // Once mannequin is loaded, load the shirt
+                loader.load(
+                    '@/assets/images/WhiteT.glb',
+                    (shirtGltf) => {
+                        const shirt = shirtGltf.scene;
+                        shirt.scale.set(1, 1, 1);
+                        shirt.position.set(0, 0, 0);
+
+                        // Option 1: Add shirt to the scene directly
+                        // scene.add(shirt);
+
+                        // Option 2: Make the shirt a child of the mannequin
+                        // so it moves/rotates with the mannequin
+                        mannequin.add(shirt);
+                    },
+                    undefined,
+                    (error) => console.error('Error loading shirt:', error)
+                );
             },
             undefined,
             (error) => {
                 console.error('Error loading mannequin:', error);
             }
         );
-
         // 5. Create an animation loop
         const animate = () => {
             requestAnimationFrame(animate);
