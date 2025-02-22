@@ -1,6 +1,11 @@
 import { StyleSheet, View, ScrollView, Text } from "react-native";
+import { useAuth } from '../../auth-provider'; // Import useAuth
 
 export default function ExploreScreen() {
+  const { user } = useAuth(); // Access the user context
+
+  console.log("Logged-in User:", user); // Log the user to verify context
+
   return (
     <ScrollView style={styles.container}>
       {/* Header Placeholder */}
@@ -9,6 +14,13 @@ export default function ExploreScreen() {
       {/* Title */}
       <Text style={styles.title}>Explore Fashion</Text>
       <Text style={styles.subtitle}>Find new trends and outfit ideas.</Text>
+
+      {/* Show logged-in user's email */}
+      {user ? (
+        <Text style={styles.loggedInText}>Welcome, {user.email}!</Text>
+      ) : (
+        <Text style={styles.loggedInText}>Not logged in</Text>
+      )}
 
       {/* Trending Styles */}
       <View style={styles.section}>
@@ -62,6 +74,12 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginBottom: 20,
     color: "#666",
+  },
+  loggedInText: {
+    fontSize: 16,
+    textAlign: "center",
+    marginBottom: 20,
+    color: "#007AFF", // Blue color for user info
   },
   section: {
     marginBottom: 20,

@@ -1,54 +1,97 @@
-import { StyleSheet, Image, View } from 'react-native';
-
+import { StyleSheet, Image, View, Button } from 'react-native';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
+import { useAuth } from '@/auth-provider';
+import { signOut } from 'firebase/auth';
+import { useRouter } from 'expo-router';
+import { auth } from '../../firebase'; // Import your Firebase auth instance
 
-export default function TabTwoScreen() {
+
+export default function ProfileScreen() {
+    const { user } = useAuth(); // Access the user context
+    const router = useRouter();
+    // Fallback values for users who are not logged in
+    const defaultProfile = {
+        name: "N/A",
+        bio: "No Drip",
+        email: "N/A",
+        phone: "N/A",
+        location: "N/A",
+    };
+
+    const handleLogout = () => {
+        signOut(auth)
+            .then(() => {
+                router.push('/signup');
+            })
+            .catch((error) => {
+                console.error('Error signing out:', error);
+            });
+    };
+
     return (
         <ParallaxScrollView
-            headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
-            headerImage={
-                <Image
-                    source={require('@/assets/images/profile.png')} // Replace with your image
-                    style={styles.profileImage}
-                />
-            }>
-            <ThemedView style={styles.container}>
-                <ThemedText type="title" style={styles.name}>
-                    John Doe
-                </ThemedText>
-                <ThemedText type="subtitle" style={styles.bio}>
-                    Passionate software developer, coffee enthusiast, and avid traveler.
-                </ThemedText>
-            </ThemedView>
-            <ThemedView style={styles.detailsSection}>
-                <View style={styles.detailItem}>
-                    <ThemedText type="defaultSemiBold" style={styles.detailLabel}>
-                        Email
-                    </ThemedText>
-                    <ThemedText style={styles.detailValue}>johndoe@example.com</ThemedText>
-                </View>
-                <View style={styles.divider} />
-                <View style={styles.detailItem}>
-                    <ThemedText type="defaultSemiBold" style={styles.detailLabel}>
-                        Phone
-                    </ThemedText>
-                    <ThemedText style={styles.detailValue}>+123 456 7890</ThemedText>
-                </View>
-                <View style={styles.divider} />
-                <View style={styles.detailItem}>
-                    <ThemedText type="defaultSemiBold" style={styles.detailLabel}>
-                        Location
-                    </ThemedText>
-                    <ThemedText style={styles.detailValue}>San Francisco, CA</ThemedText>
-                </View>
-            </ThemedView>
+        headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
+        headerImage={
+            <Image
+            source={require('@/assets/images/profile.png')} // Replace with your image
+            style={styles.profileImage}
+            />
+        }
+        >
+        <ThemedView style={styles.container}>
+            <ThemedText type="title" style={styles.name}>
+            {user?.displayName || defaultProfile.name}
+            </ThemedText>
+            <ThemedText type="subtitle" style={styles.bio}>
+            {user ? "Welcome back! Here's your profile information." : defaultProfile.bio}
+            </ThemedText>
+        </ThemedView>
+
+        <ThemedView style={styles.detailsSection}>
+            {/* Email */}
+            <View style={styles.detailItem}>
+            <ThemedText type="defaultSemiBold" style={styles.detailLabel}>
+                Email
+            </ThemedText>
+            <ThemedText style={styles.detailValue}>
+                {user?.email || defaultProfile.email}
+            </ThemedText>
+            </View>
+            <View style={styles.divider} />
+
+            {/* Phone */}
+            <View style={styles.detailItem}>
+            <ThemedText type="defaultSemiBold" style={styles.detailLabel}>
+                Phone
+            </ThemedText>
+            <ThemedText style={styles.detailValue}>
+                {user?.phoneNumber || defaultProfile.phone}
+            </ThemedText>
+            </View>
+            <View style={styles.divider} />
+
+            {/* Location */}
+            <View style={styles.detailItem}>
+            <ThemedText type="defaultSemiBold" style={styles.detailLabel}>
+                Location
+            </ThemedText>
+            <ThemedText style={styles.detailValue}>
+                {defaultProfile.location}
+            </ThemedText>
+            </View>
+        </ThemedView>
+        {user && (
+        <View style={styles.logoutButton}>
+          <Button title="Logout" onPress={handleLogout} color="#FF3B30" />
+        </View>
+      )}
         </ParallaxScrollView>
     );
 }
 
-const styles = StyleSheet.create({
+    const styles = StyleSheet.create({
     profileImage: {
         height: 150,
         width: 150,
@@ -107,4 +150,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#ddd',
         marginVertical: 10,
     },
+    logoutButton: {
+        marginTop: 20,
+        marginHorizontal: 16,
+    }
 });
