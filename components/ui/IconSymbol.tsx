@@ -4,7 +4,7 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import { SymbolWeight } from 'expo-symbols';
 import React from 'react';
-import { OpaqueColorValue, StyleProp, ViewStyle } from 'react-native';
+import { useColorScheme, OpaqueColorValue, StyleProp, ViewStyle } from 'react-native';
 
 // Add your SFSymbol to MaterialIcons mappings here.
 const MAPPING = {
@@ -45,6 +45,12 @@ export function IconSymbol({
   style?: StyleProp<ViewStyle>;
   weight?: SymbolWeight;
 }) {
+  const colorScheme = useColorScheme();
+  const isDarkMode = colorScheme === "dark";
+
+  const iconColor = color || (isDarkMode ? "white" : "black");
+  // const borderColor = isDarkMode ? "white" : "black";
+
   // return <MaterialIcons color={color} size={size} name={MAPPING[name]} style={style} />;
-  return <FontAwesome6 name={MAPPING[name]} size={24} color="black" />;
+  return <FontAwesome6 name={MAPPING[name]} size={size} color={iconColor} style={style} />;
 }
