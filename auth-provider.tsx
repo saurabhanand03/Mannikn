@@ -1,13 +1,8 @@
-import React, { useEffect, useState, createContext, useContext } from 'react';
-import { onAuthStateChanged, User, initializeAuth, getReactNativePersistence } from 'firebase/auth';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { firebaseApp } from './firebase';
-import { View, ActivityIndicator } from 'react-native';
-import { useRouter } from 'expo-router';
-import { auth } from './firebase'; // Import your Firebase auth instance
-
-
-
+import React, { useEffect, useState, createContext, useContext } from "react";
+import { onAuthStateChanged, User } from "firebase/auth";
+import { View, ActivityIndicator } from "react-native";
+import { useRouter } from "expo-router";
+import { auth } from "./firebase"; // Import your Firebase auth instance
 
 // 2️⃣ Create Auth Context
 const AuthContext = createContext<{ user: User | null }>({ user: null });
@@ -16,6 +11,7 @@ const AuthContext = createContext<{ user: User | null }>({ user: null });
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isMounted, setIsMounted] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -24,20 +20,26 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(currentUser);
       setLoading(false);
 
-      if (currentUser) {
-        router.push('/'); // Navigate to Home if logged in
-      } else {
-        router.push('/explore'); // Navigate to Explore/Login if not logged in
+      if (isMounted) {
+        if (currentUser) {
+          router.push("/"); // Navigate to Home if logged in
+        } else {
+          router.push("/explore"); // Navigate to Explore/Login if not logged in
+        }
       }
     });
 
     return () => unsubscribe(); // Cleanup listener on unmount
+  }, [isMounted]);
+
+  useEffect(() => {
+    setIsMounted(true);
   }, []);
 
   // 5️⃣ Show Loading Spinner while checking auth state
   if (loading) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <ActivityIndicator size="large" />
       </View>
     );
@@ -45,9 +47,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   // 6️⃣ Provide Auth Context to child components
   return (
-    <AuthContext.Provider value={{ user }}>
-      {children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={{ user }}>{children}</AuthContext.Provider>
   );
 }
 
