@@ -68,12 +68,28 @@ export default function SignUpScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: "center", padding: 20 },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 20,
-    textAlign: "center",
-  },
-  input: { borderWidth: 1, padding: 10, marginVertical: 5, borderRadius: 5 },
-});
+    container: {
+      flex: 1,
+      justifyContent: "center",
+      padding: 20,
+      // Optionally, set a contrasting background on the container
+      backgroundColor: "white",
+    },
+    title: {
+      fontSize: 24,
+      fontWeight: "bold",
+      marginBottom: 20,
+      textAlign: "center",
+      color: "black", // so the title shows up on the black background
+    },
+    input: {
+      borderWidth: 1,
+      borderColor: "black", // optional: adds a white border around the input
+      backgroundColor: "white", // white text box
+      color: "black", // white text inside the input
+      padding: 10,
+      marginVertical: 5,
+      borderRadius: 5,
+    },
+  });
+  
