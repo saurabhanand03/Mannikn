@@ -1,5 +1,4 @@
-import { useEffect } from "react";
-import { StyleSheet, Image, View, Button } from "react-native";
+import { StyleSheet, View, Button } from "react-native";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
@@ -12,14 +11,23 @@ export default function ProfileScreen() {
   const { user } = useAuth();
   const router = useRouter();
 
-  // If no user is logged in, show a sign in prompt
+  // If no user is logged in, show a nicer sign in prompt without a background image
   if (!user) {
     return (
-      <View style={styles.container}>
-        <ThemedText type="title" style={styles.name}>
-          Please Sign In
-        </ThemedText>
-        <Button title="Sign In" onPress={() => router.push("/login")} />
+      <View style={styles.signInContainer}>
+        <View style={styles.overlay}>
+          <ThemedText type="title" style={styles.signInTitle}>
+            Welcome Back!
+          </ThemedText>
+          <ThemedText style={styles.signInSubtitle}>
+            Please sign in to access your profile and get started.
+          </ThemedText>
+          <Button
+            title="Sign In"
+            onPress={() => router.push("/login")}
+            color="#fff"
+          />
+        </View>
       </View>
     );
   }
@@ -38,10 +46,11 @@ export default function ProfileScreen() {
     <ParallaxScrollView
       headerBackgroundColor={{ light: "#D0D0D0", dark: "#353636" }}
       headerImage={
-        <Image
-          source={require("@/assets/images/profile.png")}
-          style={styles.profileImage}
-        />
+        <View style={styles.headerPlaceholder}>
+          <ThemedText type="title" style={styles.name}>
+            {user.displayName || user.email}
+          </ThemedText>
+        </View>
       }
     >
       <ThemedView style={styles.container}>
@@ -91,14 +100,11 @@ export default function ProfileScreen() {
 }
 
 const styles = StyleSheet.create({
-  profileImage: {
+  headerPlaceholder: {
     height: 150,
-    width: 150,
-    borderRadius: 75,
-    alignSelf: "center",
-    marginTop: 20,
-    borderWidth: 3,
-    borderColor: "#ffffff",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#D0D0D0",
   },
   container: {
     alignItems: "center",
@@ -152,5 +158,29 @@ const styles = StyleSheet.create({
   logoutButton: {
     marginTop: 20,
     marginHorizontal: 16,
+  },
+  signInContainer: {
+    flex: 1,
+    backgroundColor: "#f0f0f0", // a gentle background color
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  overlay: {
+    backgroundColor: "#333", // dark overlay card for contrast
+    padding: 30,
+    borderRadius: 10,
+    alignItems: "center",
+  },
+  signInTitle: {
+    fontSize: 32,
+    color: "#fff",
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  signInSubtitle: {
+    fontSize: 18,
+    color: "#fff",
+    marginBottom: 20,
+    textAlign: "center",
   },
 });
