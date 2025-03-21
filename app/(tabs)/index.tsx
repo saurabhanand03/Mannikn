@@ -21,7 +21,7 @@ export default function HomeScreen() {
 // Load the GLB model safely
 function CesiumMan() {
     const { scene } = useGLTF(
-        'https://drive.google.com/uc?export=download&id=14pDZtEyXjBdUqFjf0E_NpUs4sFzGEwi3',
+        'https://drive.google.com/uc?export=download&id=1yJ2mCO8MnLVcDna6ubatdkdfUEtxAUPE',
         undefined
     );
 
@@ -45,7 +45,7 @@ function WhiteT() {
 
     if (!scene) return null;
 
-    return <primitive object={scene} scale={1} position={[0, -1.46, 0.01]} />;
+    return <primitive object={scene} scale={1} position={[0, -1.2, 0.05]} />;
 }
 
 function Pants(){
@@ -72,6 +72,6 @@ function Pants(){
     
       
 
-    return <primitive object={scene} scale={1} position={[0, -1.46, 0.01]} />;
+    return <primitive object={scene} scale={1} position={[0, -1.17, 0.06]} />;
 } 
 
