@@ -12,7 +12,14 @@ export default function HomeScreen() {
                 <WhiteT />
                 <Pants />
                 <CesiumMan />
-                <OrbitControls />
+                <OrbitControls 
+                    minDistance={1.5}
+                    maxDistance={5}
+                    minPolarAngle={0.5}
+                    maxPolarAngle={1.5}
+                    minAzimuthAngle={-Math.PI / 4}
+                    maxAzimuthAngle={Math.PI / 4}
+                />
             </Canvas>
         </View>
     );
