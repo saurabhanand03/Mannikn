@@ -4,7 +4,7 @@ import { useAuth } from '../../auth-provider'; // Import useAuth
 export default function ExploreScreen() {
   const { user } = useAuth(); // Access the user context
 
-  console.log("Logged-in User:", user); // Log the user to verify context
+  //console.log("Logged-in User:", user); // Log the user to verify context
 
   return (
     <ScrollView style={styles.container}>

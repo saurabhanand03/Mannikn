@@ -38,12 +38,25 @@ const styles = StyleSheet.create({
 });
 
 function WhiteT() {
-    const { scene } = useGLTF(
+    const { materials, scene } = useGLTF(
         'https://drive.google.com/uc?export=download&id=1NjRs_RRnQYq0eZgERjBwEXvtWA5xvOhm',
         undefined
     );
 
     if (!scene) return null;
+
+    useEffect(() => {
+        if (!scene) return;
+        scene.traverse((object) => {
+            if ((object as THREE.Mesh).isMesh) {
+                const mesh = object as THREE.Mesh;
+                const material = mesh.material as THREE.MeshStandardMaterial;
+                if (material && material.color) {
+                    material.color.set('#00c0b0'); 
+                }
+            }
+        });
+    }, [scene]);
 
     return <primitive object={scene} scale={1} position={[0, -1.2, 0.05]} />;
 }
