@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import { getAuth } from 'firebase/auth';
+import { db } from '../../firebase'; 
+import { collection, addDoc } from 'firebase/firestore';
 import { 
   View, 
   Text, 
@@ -16,18 +19,30 @@ export default function ClothingScreen() {
   const [size, setSize] = useState('S');
   const [color, setColor] = useState('');
 
-  const handleSubmit = () => {
-    // Process the form data as needed
-    console.log('Clothing Type:', clothingType);
-    console.log('Size:', size);
-    console.log('Color:', color);
-    // Close the modal
+  const handleSubmit = async () => {
+    try {
+      const user = getAuth().currentUser;
+      if (!user) throw new Error("User not logged in");
+  
+      const wardrobeRef = collection(db, "users", user.uid, "wardrobe");
+      await addDoc(wardrobeRef, {
+        type: clothingType,
+        size: size,
+        color: color,
+        createdAt: new Date()
+      });
+  
+      console.log("Item added to wardrobe!");
+    } catch (err) {
+      console.error("Error adding item: ", err);
+    }
+  
     setModalVisible(false);
-    // Optionally reset the form
     setClothingType('Shirt');
     setSize('S');
     setColor('');
   };
+  
 
   return (
     <View style={styles.container}>
