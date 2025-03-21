@@ -13,12 +13,12 @@ export default function HomeScreen() {
                 <Pants />
                 <CesiumMan />
                 <OrbitControls 
-                    minDistance={1.5}
-                    maxDistance={5}
                     minPolarAngle={0.5}
                     maxPolarAngle={1.5}
                     minAzimuthAngle={-Math.PI / 4}
                     maxAzimuthAngle={Math.PI / 4}
+                    enableZoom={false}
+                    enablePan={false}
                 />
             </Canvas>
         </View>
