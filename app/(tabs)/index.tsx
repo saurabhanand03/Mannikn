@@ -21,7 +21,7 @@ export default function HomeScreen() {
 // Load the GLB model safely
 function CesiumMan() {
     const { scene } = useGLTF(
-        'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/CesiumMan/glTF-Binary/CesiumMan.glb',
+        'https://drive.google.com/uc?export=download&id=14pDZtEyXjBdUqFjf0E_NpUs4sFzGEwi3',
         undefined
     );
 
@@ -64,7 +64,7 @@ function Pants(){
                 const mesh = object as THREE.Mesh;
                 const material = mesh.material as THREE.MeshStandardMaterial;
                 if (material && material.color) {
-                    material.color.set('#a0c0b0');
+                    material.color.set('#00c0b0');
                 }
             }
         });
