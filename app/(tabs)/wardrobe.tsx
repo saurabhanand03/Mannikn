@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { getAuth } from 'firebase/auth';
 import { db } from '../../firebase'; 
-import { collection, addDoc } from 'firebase/firestore';
+import { collection, addDoc, onSnapshot } from 'firebase/firestore';
 import { 
   View, 
   Text, 
@@ -9,7 +9,8 @@ import {
   Modal, 
   StyleSheet, 
   TextInput, 
-  Button 
+  Button,
+  ScrollView
 } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 
@@ -18,7 +19,21 @@ export default function ClothingScreen() {
   const [clothingType, setClothingType] = useState('Shirt');
   const [size, setSize] = useState('S');
   const [color, setColor] = useState('');
+  const [wardrobeItems, setWardrobeItems] = useState([]);
 
+  // Subscribe to the wardrobe collection in Firestore (without ordering by createdAt)
+  useEffect(() => {
+    const user = getAuth().currentUser;
+    if (!user) return;
+    const wardrobeRef = collection(db, "users", user.uid, "wardrobe");
+    const unsubscribe = onSnapshot(wardrobeRef, (snapshot) => {
+      const items = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setWardrobeItems(items);
+    });
+    return unsubscribe;
+  }, []);
+
+  // Handle adding a new wardrobe item
   const handleSubmit = async () => {
     try {
       const user = getAuth().currentUser;
@@ -29,7 +44,6 @@ export default function ClothingScreen() {
         type: clothingType,
         size: size,
         color: color,
-        createdAt: new Date()
       });
   
       console.log("Item added to wardrobe!");
@@ -37,16 +51,27 @@ export default function ClothingScreen() {
       console.error("Error adding item: ", err);
     }
   
+    // Reset form and close modal
     setModalVisible(false);
     setClothingType('Shirt');
     setSize('S');
     setColor('');
   };
-  
 
   return (
     <View style={styles.container}>
-      {/* Plus button */}
+      {/* Wardrobe Cards */}
+      <ScrollView contentContainerStyle={styles.cardContainer}>
+        {wardrobeItems.map((item) => (
+          <View key={item.id} style={styles.card}>
+            <Text style={styles.cardText}>Type: {item.type}</Text>
+            <Text style={styles.cardText}>Size: {item.size}</Text>
+            <Text style={styles.cardText}>Color: {item.color}</Text>
+          </View>
+        ))}
+      </ScrollView>
+
+      {/* Plus Button */}
       <TouchableOpacity 
         style={styles.plusButton} 
         onPress={() => setModalVisible(true)}
@@ -54,7 +79,7 @@ export default function ClothingScreen() {
         <Text style={styles.plusText}>+</Text>
       </TouchableOpacity>
 
-      {/* Modal form */}
+      {/* Modal Form */}
       <Modal
         animationType="slide"
         transparent={true}
@@ -116,6 +141,20 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+  },
+  cardContainer: {
+    padding: 20,
+    paddingBottom: 100, // extra padding for plus button
+  },
+  card: {
+    backgroundColor: '#f8f8f8',
+    padding: 15,
+    borderRadius: 8,
+    marginBottom: 10,
+    elevation: 3,
+  },
+  cardText: {
+    fontSize: 16,
   },
   plusButton: {
     position: 'absolute',
