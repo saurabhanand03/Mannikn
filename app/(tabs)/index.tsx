@@ -2,7 +2,7 @@ import React from "react";
 import { View, StyleSheet } from "react-native";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
-import { CesiumMan, WhiteT, Pants } from "@/components/Mannequin";
+import { ManMannequin, TShirt, Pants } from "@/components/Mannequin";
 
 export default function HomeScreen() {
   return (
@@ -10,16 +10,17 @@ export default function HomeScreen() {
       <Canvas camera={{ position: [0, 1, 3], fov: 75 }}>
         <ambientLight intensity={1.5} />
         <directionalLight position={[2, 4, 5]} intensity={2} />
-        <WhiteT />
-        <Pants />
-        <CesiumMan />
+        <group scale={[1.5, 1.5, 1.5]}>
+          <TShirt color="#00c0b0" />
+          <Pants color="#00c0b0" />
+          <ManMannequin color="#ffffff" />
+        </group>
         <OrbitControls
-          minPolarAngle={0.5}
-          maxPolarAngle={1.5}
-          minAzimuthAngle={-Math.PI / 4}
-          maxAzimuthAngle={Math.PI / 4}
+          minPolarAngle={Math.PI / 2}
+          maxPolarAngle={Math.PI / 2}
           enableZoom={false}
           enablePan={false}
+          rotateSpeed={10}
         />
       </Canvas>
     </View>
