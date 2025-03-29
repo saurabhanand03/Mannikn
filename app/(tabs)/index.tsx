@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import { ManMannequin, TShirt, Pants } from "@/components/Mannequin";
@@ -52,6 +52,10 @@ export default function HomeScreen() {
             rotateSpeed={10}
             />
         </Canvas>
+        {/* Button outside the Canvas */}
+        <TouchableOpacity style={styles.button} onPress={() => console.log("Button Pressed")}>
+          <Text style={styles.buttonText}>Swap Clothing</Text>
+        </TouchableOpacity>
         </View>
     );
 }
@@ -73,5 +77,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "black",
+  },
+  button: {
+    position: 'absolute',
+    top: 200, // Position the button 20 units from the top
+    right: 20, // Align it to the right side of the screen
+    backgroundColor: '#00c0b0',
+    padding: 10,
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 16,
   },
 });
