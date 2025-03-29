@@ -18,7 +18,7 @@ export default function ClothingScreen() {
   const [modalVisible, setModalVisible] = useState(false);
   const [clothingType, setClothingType] = useState('Shirt');
   const [size, setSize] = useState('S');
-  const [color, setColor] = useState('');
+  const [color, setColor] = useState('Black');
   const [wardrobeItems, setWardrobeItems] = useState([]);
 
   // Subscribe to the wardrobe collection in Firestore (without ordering by createdAt)
@@ -116,14 +116,23 @@ export default function ClothingScreen() {
               <Picker.Item label="XL" value="XL" />
             </Picker>
 
-            {/* Color Input */}
+            {/* Color Dropdown */}
             <Text style={styles.label}>Color</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Enter color"
-              value={color}
-              onChangeText={setColor}
-            />
+            <Picker
+              selectedValue={color}
+              style={styles.picker}
+              onValueChange={(itemValue) => setColor(itemValue)}
+            >
+              <Picker.Item label="Black" value="Black" />
+              <Picker.Item label="White" value="White" />
+              <Picker.Item label="Red" value="Red" />
+              <Picker.Item label="Blue" value="Blue" />
+              <Picker.Item label="Green" value="Green" />
+              <Picker.Item label="Yellow" value="Yellow" />
+              <Picker.Item label="Purple" value="Purple" />
+              <Picker.Item label="Gray" value="Gray" />
+            </Picker>
+
 
             {/* Action Buttons */}
             <View style={styles.buttonRow}>
