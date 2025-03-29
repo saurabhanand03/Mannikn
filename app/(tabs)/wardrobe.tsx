@@ -8,9 +8,9 @@ import {
   TouchableOpacity, 
   Modal, 
   StyleSheet, 
-  TextInput, 
   Button,
-  ScrollView
+  ScrollView,
+  Image
 } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 
@@ -21,7 +21,6 @@ export default function ClothingScreen() {
   const [color, setColor] = useState('Black');
   const [wardrobeItems, setWardrobeItems] = useState([]);
 
-  // Subscribe to the wardrobe collection in Firestore (without ordering by createdAt)
   useEffect(() => {
     const user = getAuth().currentUser;
     if (!user) return;
@@ -33,7 +32,6 @@ export default function ClothingScreen() {
     return unsubscribe;
   }, []);
 
-  // Handle adding a new wardrobe item
   const handleSubmit = async () => {
     try {
       const user = getAuth().currentUser;
@@ -50,25 +48,38 @@ export default function ClothingScreen() {
     } catch (err) {
       console.error("Error adding item: ", err);
     }
-  
-    // Reset form and close modal
+
     setModalVisible(false);
     setClothingType('Shirt');
     setSize('S');
-    setColor('');
+    setColor('Black');
   };
 
   return (
     <View style={styles.container}>
-      {/* Wardrobe Cards */}
+      {/* Wardrobe Icons */}
       <ScrollView contentContainerStyle={styles.cardContainer}>
-        {wardrobeItems.map((item) => (
-          <View key={item.id} style={styles.card}>
-            <Text style={styles.cardText}>Type: {item.type}</Text>
-            <Text style={styles.cardText}>Size: {item.size}</Text>
-            <Text style={styles.cardText}>Color: {item.color}</Text>
-          </View>
-        ))}
+        {wardrobeItems.map((item) => {
+          let iconSource;
+          if (item.type === "Shirt") {
+            iconSource = require('../../assets/icons/shirt_icon.png');
+          } else if (item.type === "Pant") {
+            iconSource = require('../../assets/icons/pants.png');
+          } else {
+            return null; // skip unknown types
+          }
+
+          return (
+            <View key={item.id} style={styles.card}>
+              <Image 
+                source={iconSource}
+                style={[styles.icon, { tintColor: item.color.toLowerCase() }]}
+                resizeMode="contain"
+              />
+              <Text style={styles.cardText}>{item.type} ({item.size})</Text>
+            </View>
+          );
+        })}
       </ScrollView>
 
       {/* Plus Button */}
@@ -133,7 +144,6 @@ export default function ClothingScreen() {
               <Picker.Item label="Gray" value="Gray" />
             </Picker>
 
-
             {/* Action Buttons */}
             <View style={styles.buttonRow}>
               <Button title="Cancel" onPress={() => setModalVisible(false)} />
@@ -153,17 +163,23 @@ const styles = StyleSheet.create({
   },
   cardContainer: {
     padding: 20,
-    paddingBottom: 100, // extra padding for plus button
+    paddingBottom: 100,
   },
   card: {
     backgroundColor: '#f8f8f8',
     padding: 15,
     borderRadius: 8,
-    marginBottom: 10,
+    marginBottom: 15,
+    alignItems: 'center',
     elevation: 3,
   },
   cardText: {
     fontSize: 16,
+    marginTop: 8,
+  },
+  icon: {
+    width: 80,
+    height: 80,
   },
   plusButton: {
     position: 'absolute',
@@ -207,14 +223,6 @@ const styles = StyleSheet.create({
   picker: {
     height: 50,
     width: '100%',
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 4,
-    paddingHorizontal: 10,
-    marginTop: 5,
-    height: 40,
   },
   buttonRow: {
     flexDirection: 'row',
