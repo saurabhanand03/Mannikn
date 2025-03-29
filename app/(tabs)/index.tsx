@@ -175,8 +175,8 @@ const styles = StyleSheet.create({
   },
   swapButton: {
     position: "absolute",
-    top: 100,
-    right: 20,
+    top: 150,
+    right: 150,
     backgroundColor: "#007AFF",
     paddingVertical: 10,
     paddingHorizontal: 15,
