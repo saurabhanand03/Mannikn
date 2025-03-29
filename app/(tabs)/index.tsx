@@ -1,5 +1,14 @@
 import React, { useRef, useState, useEffect } from "react";
-import { View, StyleSheet, Modal, TouchableOpacity, Text, Button, FlatList } from "react-native";
+import { 
+  View, 
+  StyleSheet, 
+  Modal, 
+  TouchableOpacity, 
+  Text, 
+  Button, 
+  FlatList, 
+  Image 
+} from "react-native";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import { ManMannequin, TShirt, Pants } from "@/components/Mannequin";
@@ -52,11 +61,12 @@ export default function HomeScreen() {
   return (
     <View style={styles.container}>
       {/* Swap Outfit Button */}
-      <View style={styles.swapButtons}>
-        <TouchableOpacity style={styles.swapButton} onPress={() => setModalVisible(true)}>
-          <Text style={styles.swapButtonText}>Swap Outfit</Text>
-        </TouchableOpacity>
-      </View>
+      <TouchableOpacity 
+        style={styles.swapButton} 
+        onPress={() => setModalVisible(true)}
+      >
+        <Text style={styles.swapButtonText}>Swap Outfit</Text>
+      </TouchableOpacity>
 
       {/* Canvas (Mannequin + Outfit) */}
       <Canvas camera={{ position: [0, 1, 3], fov: 75 }}>
@@ -91,35 +101,51 @@ export default function HomeScreen() {
               data={wardrobeItems}
               keyExtractor={(item) => item.id}
               numColumns={2}
-              renderItem={({ item }) => (
-                <TouchableOpacity
-                  style={styles.itemBox}
-                  onPress={async () => {
-                    const user = getAuth().currentUser;
-                    if (!user) return;
+              contentContainerStyle={styles.cardContainer}
+              renderItem={({ item }) => {
+                let iconSource;
+                if (item.type === "Shirt") {
+                  iconSource = require("../../assets/icons/black_shirt_icon.png");
+                } else if (item.type === "Pant") {
+                  iconSource = require("../../assets/icons/black_pants_icon.png");
+                } else {
+                  return null;
+                }
+                return (
+                  <TouchableOpacity
+                    style={styles.card}
+                    onPress={async () => {
+                      const user = getAuth().currentUser;
+                      if (!user) return;
 
-                    const userRef = doc(db, "users", user.uid);
-                    const field = item.type === "Shirt" ? "top" : "bottom";
+                      const userRef = doc(db, "users", user.uid);
+                      const field = item.type === "Shirt" ? "top" : "bottom";
 
-                    await updateDoc(userRef, {
-                      [`selectedOutfit.${field}`]: {
-                        type: item.type,
-                        size: item.size,
-                        color: item.color,
-                      },
-                    });
+                      await updateDoc(userRef, {
+                        [`selectedOutfit.${field}`]: {
+                          type: item.type,
+                          size: item.size,
+                          color: item.color,
+                        },
+                      });
 
-                    if (field === "top") setTopColor(item.color);
-                    else setBottomColor(item.color);
+                      if (field === "top") setTopColor(item.color);
+                      else setBottomColor(item.color);
 
-                    setModalVisible(false);
-                  }}
-                >
-                  <Text style={{ color: item.color }}>{item.color}</Text>
-                  <Text>{item.type}</Text>
-                  <Text>{item.size}</Text>
-                </TouchableOpacity>
-              )}
+                      setModalVisible(false);
+                    }}
+                  >
+                    <Image
+                      source={iconSource}
+                      style={[styles.icon, { tintColor: item.color.toLowerCase() }]}
+                      resizeMode="contain"
+                    />
+                    <Text style={styles.cardText}>
+                      {item.type} ({item.size})
+                    </Text>
+                  </TouchableOpacity>
+                );
+              }}
             />
             <Button title="Cancel" onPress={() => setModalVisible(false)} />
           </View>
@@ -147,17 +173,15 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "black",
   },
-  swapButtons: {
-    flexDirection: "row",
-    justifyContent: "center",
-    padding: 10,
-    backgroundColor: "#111",
-    zIndex: 1,
-  },
   swapButton: {
+    position: "absolute",
+    top: 100,
+    right: 20,
     backgroundColor: "#007AFF",
-    padding: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 15,
     borderRadius: 8,
+    zIndex: 10,
   },
   swapButtonText: {
     color: "white",
@@ -182,13 +206,26 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     textAlign: "center",
   },
-  itemBox: {
-    borderWidth: 1,
-    borderColor: "#ddd",
+  cardContainer: {
     padding: 10,
-    margin: 5,
-    width: "45%",
+    justifyContent: "center",
     alignItems: "center",
+  },
+  card: {
+    backgroundColor: "#f8f8f8",
+    padding: 15,
     borderRadius: 8,
+    margin: 5,
+    alignItems: "center",
+    elevation: 3,
+    width: "45%",
+  },
+  cardText: {
+    fontSize: 16,
+    marginTop: 8,
+  },
+  icon: {
+    width: 80,
+    height: 80,
   },
 });
