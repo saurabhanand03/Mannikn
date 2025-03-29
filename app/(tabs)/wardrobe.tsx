@@ -62,9 +62,9 @@ export default function ClothingScreen() {
         {wardrobeItems.map((item) => {
           let iconSource;
           if (item.type === "Shirt") {
-            iconSource = require('../../assets/icons/shirt_icon.png');
+            iconSource = require('../../assets/icons/black_shirt_icon.png');
           } else if (item.type === "Pant") {
-            iconSource = require('../../assets/icons/pants.png');
+            iconSource = require('../../assets/icons/black_pants_icon.png');
           } else {
             return null; // skip unknown types
           }
