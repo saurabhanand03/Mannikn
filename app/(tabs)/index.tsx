@@ -68,7 +68,7 @@ export default function HomeScreen() {
         <Text style={styles.swapButtonText}>Swap Outfit</Text>
       </TouchableOpacity>
 
-      {/* Canvas (Mannequin + Outfit) */}
+      {/* Canvas */}
       <Canvas camera={{ position: [0, 1, 3], fov: 75 }}>
         <ambientLight intensity={1.5} />
         <directionalLight position={[2, 4, 5]} intensity={1} />

@@ -47,7 +47,8 @@ export function ManMannequin({ color }: { color?: string }) {
 export function TShirt({ color }: { color?: string }) {
   return (
     <Model
-      url="https://drive.google.com/uc?export=download&id=1NjRs_RRnQYq0eZgERjBwEXvtWA5xvOhm"
+      //url="https://drive.google.com/uc?export=download&id=1NjRs_RRnQYq0eZgERjBwEXvtWA5xvOhm"
+      url="https://drive.google.com/uc?export=download&id=19AxZ3IEWZqReB2uUT2bIj9yyyULVFvSK"
       color={color}
       scale={1}
       position={[0, -1.2, 0.05]}
@@ -58,7 +59,8 @@ export function TShirt({ color }: { color?: string }) {
 export function Pants({ color }: { color?: string }) {
   return (
     <Model
-      url="https://drive.google.com/uc?export=download&id=1848VEOTDguvbLd03hH7HBw_i6Jfdoc0M"
+      //url="https://drive.google.com/uc?export=download&id=1848VEOTDguvbLd03hH7HBw_i6Jfdoc0M"
+      url="https://drive.google.com/uc?export=download&id=1sWiOonCianK04gf4RWKy9sXCLddyxSnv"
       color={color}
       scale={1}
       position={[0, -1.17, 0.06]}
