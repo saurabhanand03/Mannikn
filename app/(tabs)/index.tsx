@@ -16,6 +16,7 @@ import { THREE } from "expo-three";
 import { getAuth } from "firebase/auth";
 import { db } from "../../firebase";
 import { doc, getDoc, collection, getDocs, updateDoc } from "firebase/firestore";
+import { Suspense } from "react";
 
 export default function HomeScreen() {
   const [topColor, setTopColor] = useState("#00c0b0");
@@ -73,11 +74,13 @@ export default function HomeScreen() {
         <ambientLight intensity={1.5} />
         <directionalLight position={[2, 4, 5]} intensity={1} />
         <FollowCameraLight />
-        <group scale={[1.5, 1.5, 1.5]}>
-          <TShirt color={topColor} />
-          <Pants color={bottomColor} />
-          <ManMannequin color="#ffffff" />
-        </group>
+        <Suspense fallback={null}>
+          <group scale={[1.5, 1.5, 1.5]}>
+            <TShirt color={topColor} />
+            <Pants color={bottomColor} />
+            <ManMannequin color="#ffffff" />
+          </group>
+        </Suspense>
         <OrbitControls
           minPolarAngle={Math.PI / 2}
           maxPolarAngle={Math.PI / 2}
