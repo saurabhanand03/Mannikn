@@ -6,6 +6,8 @@ interface ModelProps {
   color?: string;
   scale?: number;
   position?: [number, number, number];
+  onLoadStart?: () => void;
+  onLoadEnd?: () => void;
 }
 
 export function Model({
@@ -13,12 +15,14 @@ export function Model({
   color = "#ffffff",
   scale = 1,
   position = [0, 0, 0],
+  onLoadStart,
+  onLoadEnd
 }: ModelProps) {
-  const { scene } = useGLTF(url);
-
-  if (!scene) return null;
+  const { scene } = useGLTF(url, true);
 
   useEffect(() => {
+    onLoadStart?.();
+
     scene.traverse((object) => {
       if ((object as THREE.Mesh).isMesh) {
         const mesh = object as THREE.Mesh;
@@ -28,42 +32,48 @@ export function Model({
         }
       }
     });
+
+    onLoadEnd?.();
   }, [scene, color]);
 
   return <primitive object={scene} scale={scale} position={position} />;
 }
 
-export function ManMannequin({ color }: { color?: string }) {
+export function ManMannequin({ color, onLoadStart, onLoadEnd }: { color?: string, onLoadStart?: () => void, onLoadEnd?: () => void }) {
   return (
     <Model
       url="https://drive.google.com/uc?export=download&id=1yJ2mCO8MnLVcDna6ubatdkdfUEtxAUPE"
       color={color}
       scale={1}
       position={[0, -1, 0]}
+      onLoadStart={onLoadStart}
+      onLoadEnd={onLoadEnd}
     />
   );
 }
 
-export function TShirt({ color }: { color?: string }) {
+export function TShirt({ color, onLoadStart, onLoadEnd }: { color?: string, onLoadStart?: () => void, onLoadEnd?: () => void }) {
   return (
     <Model
-      //url="https://drive.google.com/uc?export=download&id=1NjRs_RRnQYq0eZgERjBwEXvtWA5xvOhm"
       url="https://drive.google.com/uc?export=download&id=19AxZ3IEWZqReB2uUT2bIj9yyyULVFvSK"
       color={color}
       scale={1}
       position={[0, -1, 0]}
+      onLoadStart={onLoadStart}
+      onLoadEnd={onLoadEnd}
     />
   );
 }
 
-export function Pants({ color }: { color?: string }) {
+export function Pants({ color, onLoadStart, onLoadEnd }: { color?: string, onLoadStart?: () => void, onLoadEnd?: () => void }) {
   return (
     <Model
-      //url="https://drive.google.com/uc?export=download&id=1848VEOTDguvbLd03hH7HBw_i6Jfdoc0M"
       url="https://drive.google.com/uc?export=download&id=1sWiOonCianK04gf4RWKy9sXCLddyxSnv"
       color={color}
       scale={1}
       position={[0, -1.0, 0]}
+      onLoadStart={onLoadStart}
+      onLoadEnd={onLoadEnd}
     />
   );
 }

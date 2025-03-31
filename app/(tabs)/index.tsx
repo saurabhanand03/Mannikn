@@ -17,12 +17,15 @@ import { getAuth } from "firebase/auth";
 import { db } from "../../firebase";
 import { doc, getDoc, collection, getDocs, updateDoc } from "firebase/firestore";
 import { Suspense } from "react";
+import { LoadingSpinner } from "@/components/LoadingSpinner";
 
 export default function HomeScreen() {
   const [topColor, setTopColor] = useState("#00c0b0");
   const [bottomColor, setBottomColor] = useState("#00c0b0");
   const [modalVisible, setModalVisible] = useState(false);
   const [wardrobeItems, setWardrobeItems] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
 
   useEffect(() => {
     const fetchSelectedOutfit = async () => {
@@ -61,6 +64,7 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
+      {isLoading && <LoadingSpinner />}
       {/* Swap Outfit Button */}
       <TouchableOpacity 
         style={styles.swapButton} 
@@ -76,9 +80,22 @@ export default function HomeScreen() {
         <FollowCameraLight />
         <Suspense fallback={null}>
           <group scale={[1.5, 1.5, 1.5]}>
-            <TShirt color={topColor} />
-            <Pants color={bottomColor} />
-            <ManMannequin color="#ffffff" />
+            <TShirt 
+              color={topColor} 
+              onLoadStart={() => setIsLoading(true)} 
+              onLoadEnd={() => setIsLoading(false)} 
+            />
+            <Pants 
+              color={bottomColor} 
+              onLoadStart={() => setIsLoading(true)} 
+              onLoadEnd={() => setIsLoading(false)} 
+            />
+            <ManMannequin 
+              color="#fff" 
+              onLoadStart={() => setIsLoading(true)} 
+              onLoadEnd={() => setIsLoading(false)} 
+            />
+
           </group>
         </Suspense>
         <OrbitControls
