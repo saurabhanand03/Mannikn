@@ -1,4 +1,4 @@
-import { StyleSheet, View, Button } from "react-native";
+import { StyleSheet, View, Button, TouchableOpacity } from "react-native";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
@@ -6,17 +6,27 @@ import { useAuth } from "@/auth-provider";
 import { getAuth, signOut } from "firebase/auth";
 import { useRouter } from "expo-router";
 import { auth } from "../../firebase";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import { Picker } from "@react-native-picker/picker";
+import RNPickerSelect from "react-native-picker-select";
+import { Ionicons } from "@expo/vector-icons";
+import { TouchableWithoutFeedback } from "react-native";
 
 
 export default function ProfileScreen() {
   const { user } = useAuth();
   const router = useRouter();
   const [gender, setGender] = useState("");
+  const [skinTone, setSkinTone] = useState("");
 
+  const skinTones = [
+    { label: "Light", color: "#f3d7b6" },
+    { label: "Tan", color: "#e0ac69" },
+    { label: "Brown", color: "#c68642" },
+    { label: "Dark", color: "#8d5524" },
+  ];
 
 
   useEffect(() => {
@@ -28,6 +38,7 @@ export default function ProfileScreen() {
       const snapshot = await getDoc(userRef);
       if (snapshot.exists()) {
         setGender(snapshot.data().gender || "");
+        setSkinTone(snapshot.data().skinTone || "");
       }
     };
   
@@ -64,6 +75,8 @@ export default function ProfileScreen() {
         console.error("Error signing out:", error);
       });
   };
+
+  
 
   return (
     <ParallaxScrollView
@@ -113,7 +126,9 @@ export default function ProfileScreen() {
           </ThemedText>
           <ThemedText style={styles.detailValue}>N/A</ThemedText>
         </View>
-        {/* Gender Picker */}
+        <View style={styles.divider} />
+
+        {/* Gender Picker 
         <View style={styles.detailItem}>
           <ThemedText type="defaultSemiBold" style={styles.detailLabel}>
             Gender
@@ -134,6 +149,86 @@ export default function ProfileScreen() {
             <Picker.Item label="Female" value="female" />
           </Picker>
         </View>
+        */}
+        <View style={styles.detailItem}>
+          <ThemedText type="defaultSemiBold" style={styles.detailLabel}>
+            Gender
+          </ThemedText>
+          <View style={styles.nativePickerWrapper}>
+            <Picker
+              selectedValue={gender}
+              style={styles.nativePicker}
+              dropdownIconColor="#666"
+              onValueChange={async (value) => {
+                setGender(value);
+                const user = getAuth().currentUser;
+                if (!user) return;
+                const userRef = doc(db, "users", user.uid);
+                await updateDoc(userRef, { gender: value });
+              }}
+            >
+              <Picker.Item label="Select" value="" />
+              <Picker.Item label="Male" value="male" />
+              <Picker.Item label="Female" value="female" />
+            </Picker>
+          </View>
+        </View>
+
+        <View style={styles.divider} />
+        {/*}
+        <View style={styles.detailItem}>
+          <ThemedText type="defaultSemiBold" style={styles.detailLabel}>
+            Skin Tone
+          </ThemedText>
+          <Picker
+            selectedValue={skinTone}
+            style={{ width: 150 }}
+            onValueChange={async (value) => {
+              setSkinTone(value);
+              const user = getAuth().currentUser;
+              if (!user) return;
+              const userRef = doc(db, "users", user.uid);
+              await updateDoc(userRef, { skinTone: value });
+            }}
+          >
+            <Picker.Item label="Select" value="" />
+            <Picker.Item label="Light" value="#F2D6CB" />
+            <Picker.Item label="Tan" value="#D2A679" />
+            <Picker.Item label="Brown" value="#8B5E3C" />
+            <Picker.Item label="Dark" value="#4A2C1A" />
+          </Picker>
+        </View>
+        */}
+
+        <View style={styles.detailItem}>
+          <ThemedText type="defaultSemiBold" style={styles.detailLabel}>
+            Skin Tone
+          </ThemedText>
+          <View style={styles.skinToneOptions}>
+            {skinTones.map(({ color }) => (
+              <TouchableOpacity
+                key={color}
+                style={[
+                  styles.skinCircle,
+                  { backgroundColor: color },
+                  skinTone === color && styles.skinCircleSelected,
+                ]}
+                onPress={async () => {
+                  setSkinTone(color);
+                  const user = getAuth().currentUser;
+                  if (!user) return;
+                  const userRef = doc(db, "users", user.uid);
+                  await updateDoc(userRef, { skinTone: color });
+                }}
+              />
+            ))}
+          </View>
+        </View>
+        <View style={styles.divider} />
+
+
+
+
       </ThemedView>
 
       <View style={styles.logoutButton}>
@@ -227,4 +322,41 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     textAlign: "center",
   },
+nativePickerWrapper: {
+  flex: 1,
+  alignItems: "flex-end",
+  justifyContent: "center",
+},
+
+nativePicker: {
+  width: 150,
+  color: "#333",
+  fontWeight: "bold",
+  textAlign: "right", 
+  paddingRight: 10,   
+  backgroundColor: "transparent",
+},
+
+skinCircle: {
+  width: 40,
+  height: 40,
+  borderRadius: 20,
+  margin: 5,
+  borderWidth: 2,
+  borderColor: "transparent",
+},
+skinCircleSelected: {
+  borderColor: "#007AFF",
+},
+skinToneOptions: {
+  flexDirection: "row",
+  alignItems: "center",
+  justifyContent: "flex-end",
+  flexWrap: "wrap",
+  flex: 1,
+},
+
+  
+  
+  
 });

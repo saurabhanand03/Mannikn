@@ -19,6 +19,7 @@ import { doc, getDoc, collection, getDocs, updateDoc, onSnapshot } from "firebas
 import { Suspense } from "react";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 
+
 export default function HomeScreen() {
   const [topColor, setTopColor] = useState("#00c0b0");
   const [bottomColor, setBottomColor] = useState("#00c0b0");
@@ -26,6 +27,8 @@ export default function HomeScreen() {
   const [wardrobeItems, setWardrobeItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [gender, setGender] = useState("male");
+  const [skinTone, setSkinTone] = useState("#fff");
+
 
 
   useEffect(() => {
@@ -73,6 +76,8 @@ export default function HomeScreen() {
       if (snapshot.exists()) {
         const userData = snapshot.data();
         setGender(userData.gender);
+        setSkinTone(userData.skinTone || "#fff");
+
       }
     });
   
@@ -109,7 +114,7 @@ export default function HomeScreen() {
             />
             <ManMannequin
               gender={gender === "male" || gender === "female" ? gender : undefined}
-              color="#fff" 
+              color={skinTone} 
               onLoadStart={() => setIsLoading(true)} 
               onLoadEnd={() => setIsLoading(false)} 
             />
