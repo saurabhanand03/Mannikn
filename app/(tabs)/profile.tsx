@@ -3,13 +3,36 @@ import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useAuth } from "@/auth-provider";
-import { signOut } from "firebase/auth";
+import { getAuth, signOut } from "firebase/auth";
 import { useRouter } from "expo-router";
 import { auth } from "../../firebase";
+import { useEffect, useState } from "react";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { db } from "../../firebase";
+import { Picker } from "@react-native-picker/picker";
+
 
 export default function ProfileScreen() {
   const { user } = useAuth();
   const router = useRouter();
+  const [gender, setGender] = useState("");
+
+
+
+  useEffect(() => {
+    const fetchGender = async () => {
+      const user = getAuth().currentUser;
+      if (!user) return;
+  
+      const userRef = doc(db, "users", user.uid);
+      const snapshot = await getDoc(userRef);
+      if (snapshot.exists()) {
+        setGender(snapshot.data().gender || "");
+      }
+    };
+  
+    fetchGender();
+  }, []);
 
   // If no user is logged in, show a nicer sign in prompt without a background image
   if (!user) {
@@ -89,6 +112,27 @@ export default function ProfileScreen() {
             Location
           </ThemedText>
           <ThemedText style={styles.detailValue}>N/A</ThemedText>
+        </View>
+        {/* Gender Picker */}
+        <View style={styles.detailItem}>
+          <ThemedText type="defaultSemiBold" style={styles.detailLabel}>
+            Gender
+          </ThemedText>
+          <Picker
+            selectedValue={gender}
+            style={{ width: 150 }}
+            onValueChange={async (value) => {
+              setGender(value);
+              const user = getAuth().currentUser;
+              if (!user) return;
+              const userRef = doc(db, "users", user.uid);
+              await updateDoc(userRef, { gender: value });
+            }}
+          >
+            <Picker.Item label="Select" value="" />
+            <Picker.Item label="Male" value="male" />
+            <Picker.Item label="Female" value="female" />
+          </Picker>
         </View>
       </ThemedView>
 

@@ -15,7 +15,7 @@ import { ManMannequin, TShirt, Pants } from "@/components/Mannequin";
 import { THREE } from "expo-three";
 import { getAuth } from "firebase/auth";
 import { db } from "../../firebase";
-import { doc, getDoc, collection, getDocs, updateDoc } from "firebase/firestore";
+import { doc, getDoc, collection, getDocs, updateDoc, onSnapshot } from "firebase/firestore";
 import { Suspense } from "react";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 
@@ -25,6 +25,7 @@ export default function HomeScreen() {
   const [modalVisible, setModalVisible] = useState(false);
   const [wardrobeItems, setWardrobeItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [gender, setGender] = useState("male");
 
 
   useEffect(() => {
@@ -62,6 +63,22 @@ export default function HomeScreen() {
     if (modalVisible) fetchWardrobe();
   }, [modalVisible]);
 
+  
+  useEffect(() => {
+    const user = getAuth().currentUser;
+    if (!user) return;
+  
+    const userRef = doc(db, "users", user.uid);
+    const unsubscribe = onSnapshot(userRef, (snapshot) => {
+      if (snapshot.exists()) {
+        const userData = snapshot.data();
+        setGender(userData.gender);
+      }
+    });
+  
+    return () => unsubscribe(); 
+  }, []);
+
   return (
     <View style={styles.container}>
       {isLoading && <LoadingSpinner />}
@@ -90,7 +107,8 @@ export default function HomeScreen() {
               onLoadStart={() => setIsLoading(true)} 
               onLoadEnd={() => setIsLoading(false)} 
             />
-            <ManMannequin 
+            <ManMannequin
+              gender={gender === "male" || gender === "female" ? gender : undefined}
               color="#fff" 
               onLoadStart={() => setIsLoading(true)} 
               onLoadEnd={() => setIsLoading(false)} 

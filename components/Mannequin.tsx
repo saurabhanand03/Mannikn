@@ -39,10 +39,25 @@ export function Model({
   return <primitive object={scene} scale={scale} position={position} />;
 }
 
-export function ManMannequin({ color, onLoadStart, onLoadEnd }: { color?: string, onLoadStart?: () => void, onLoadEnd?: () => void }) {
+export function ManMannequin({
+  gender = "male",
+  color,
+  onLoadStart,
+  onLoadEnd,
+}: {
+  gender?: "male" | "female";
+  color?: string;
+  onLoadStart?: () => void;
+  onLoadEnd?: () => void;
+}) {
+  const url =
+    gender === "female"
+      ? "https://drive.google.com/uc?export=download&id=14pDZtEyXjBdUqFjf0E_NpUs4sFzGEwi3"
+      : "https://drive.google.com/uc?export=download&id=1yJ2mCO8MnLVcDna6ubatdkdfUEtxAUPE"; // Your current male GLB
+
   return (
     <Model
-      url="https://drive.google.com/uc?export=download&id=1yJ2mCO8MnLVcDna6ubatdkdfUEtxAUPE"
+      url={url}
       color={color}
       scale={1}
       position={[0, -1, 0]}
@@ -51,6 +66,7 @@ export function ManMannequin({ color, onLoadStart, onLoadEnd }: { color?: string
     />
   );
 }
+
 
 export function TShirt({ color, onLoadStart, onLoadEnd }: { color?: string, onLoadStart?: () => void, onLoadEnd?: () => void }) {
   return (
