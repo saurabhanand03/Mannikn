@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
   },
   messagesContainer: {
     flex: 1,
-    paddingTop: 20,
+    paddingTop: 50,
     padding: 10,
   },
   messageBubble: {
