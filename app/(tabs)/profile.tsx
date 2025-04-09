@@ -154,25 +154,24 @@ export default function ProfileScreen() {
           <ThemedText type="defaultSemiBold" style={styles.detailLabel}>
             Gender
           </ThemedText>
-          <View style={styles.nativePickerWrapper}>
-            <Picker
-              selectedValue={gender}
-              style={styles.nativePicker}
-              dropdownIconColor="#666"
-              onValueChange={async (value) => {
-                setGender(value);
-                const user = getAuth().currentUser;
-                if (!user) return;
-                const userRef = doc(db, "users", user.uid);
-                await updateDoc(userRef, { gender: value });
-              }}
-            >
-              <Picker.Item label="Select" value="" />
-              <Picker.Item label="Male" value="male" />
-              <Picker.Item label="Female" value="female" />
-            </Picker>
-          </View>
+          <Picker
+            selectedValue={gender}
+            style={styles.picker} // same styling as in ClothingScreen
+            dropdownIconColor="#666"
+            onValueChange={async (value) => {
+              setGender(value);
+              const currentUser = getAuth().currentUser;
+              if (!currentUser) return;
+              const userRef = doc(db, "users", currentUser.uid);
+              await updateDoc(userRef, { gender: value });
+            }}
+          >
+            <Picker.Item label="Select" value="" />
+            <Picker.Item label="Male" value="male" />
+            <Picker.Item label="Female" value="female" />
+          </Picker>
         </View>
+
 
         <View style={styles.divider} />
         {/*}
@@ -326,6 +325,10 @@ nativePickerWrapper: {
   flex: 1,
   alignItems: "flex-end",
   justifyContent: "center",
+},
+picker: {
+  height: 50,
+  width: 150, 
 },
 
 nativePicker: {
