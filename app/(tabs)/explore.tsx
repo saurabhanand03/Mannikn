@@ -84,11 +84,11 @@ const styles = StyleSheet.create({
   },
   messagesContainer: {
     flex: 1,
+    paddingTop: 20,
     padding: 10,
   },
   messageBubble: {
     padding: 10,
-    paddingTop: 15,
     borderRadius: 8,
     marginBottom: 10,
     maxWidth: "80%",
