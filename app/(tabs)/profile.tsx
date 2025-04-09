@@ -128,20 +128,19 @@ export default function ProfileScreen() {
         </View>
         <View style={styles.divider} />
 
-        {}
+        {/* Gender Picker 
         <View style={styles.detailItem}>
           <ThemedText type="defaultSemiBold" style={styles.detailLabel}>
             Gender
           </ThemedText>
           <Picker
             selectedValue={gender}
-            style={styles.picker} // same styling as in ClothingScreen
-            dropdownIconColor="#666"
+            style={{ width: 150 }}
             onValueChange={async (value) => {
               setGender(value);
-              const currentUser = getAuth().currentUser;
-              if (!currentUser) return;
-              const userRef = doc(db, "users", currentUser.uid);
+              const user = getAuth().currentUser;
+              if (!user) return;
+              const userRef = doc(db, "users", user.uid);
               await updateDoc(userRef, { gender: value });
             }}
           >
@@ -150,9 +149,56 @@ export default function ProfileScreen() {
             <Picker.Item label="Female" value="female" />
           </Picker>
         </View>
+        */}
+        <View style={styles.detailItem}>
+          <ThemedText type="defaultSemiBold" style={styles.detailLabel}>
+            Gender
+          </ThemedText>
+          <View style={styles.nativePickerWrapper}>
+            <Picker
+              selectedValue={gender}
+              style={styles.nativePicker}
+              dropdownIconColor="#666"
+              onValueChange={async (value) => {
+                setGender(value);
+                const user = getAuth().currentUser;
+                if (!user) return;
+                const userRef = doc(db, "users", user.uid);
+                await updateDoc(userRef, { gender: value });
+              }}
+            >
+              <Picker.Item label="Select" value="" />
+              <Picker.Item label="Male" value="male" />
+              <Picker.Item label="Female" value="female" />
+            </Picker>
+          </View>
+        </View>
 
         <View style={styles.divider} />
-        {}
+        {/*}
+        <View style={styles.detailItem}>
+          <ThemedText type="defaultSemiBold" style={styles.detailLabel}>
+            Skin Tone
+          </ThemedText>
+          <Picker
+            selectedValue={skinTone}
+            style={{ width: 150 }}
+            onValueChange={async (value) => {
+              setSkinTone(value);
+              const user = getAuth().currentUser;
+              if (!user) return;
+              const userRef = doc(db, "users", user.uid);
+              await updateDoc(userRef, { skinTone: value });
+            }}
+          >
+            <Picker.Item label="Select" value="" />
+            <Picker.Item label="Light" value="#F2D6CB" />
+            <Picker.Item label="Tan" value="#D2A679" />
+            <Picker.Item label="Brown" value="#8B5E3C" />
+            <Picker.Item label="Dark" value="#4A2C1A" />
+          </Picker>
+        </View>
+        */}
 
         <View style={styles.detailItem}>
           <ThemedText type="defaultSemiBold" style={styles.detailLabel}>
@@ -280,10 +326,6 @@ nativePickerWrapper: {
   flex: 1,
   alignItems: "flex-end",
   justifyContent: "center",
-},
-picker: {
-  height: 50,
-  width: 150, 
 },
 
 nativePicker: {
