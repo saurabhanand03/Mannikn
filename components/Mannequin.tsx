@@ -52,8 +52,8 @@ export function ManMannequin({
 }) {
   const url =
     gender === "female"
-      ? "https://drive.google.com/uc?export=download&id=14pDZtEyXjBdUqFjf0E_NpUs4sFzGEwi3"
-      : "https://drive.google.com/uc?export=download&id=1yJ2mCO8MnLVcDna6ubatdkdfUEtxAUPE"; // Your current male GLB
+      ? "https://drive.google.com/uc?export=download&id=1HbE7DI2Jj1LjUrjeVNCZM9ULmpglHCAg"
+      : "https://drive.google.com/uc?export=download&id=1pVhtzQ3hCMTHBp2aJ6nE3RMhSNbr0Krg"; // Your current male GLB
 
   return (
     <Model
@@ -71,7 +71,7 @@ export function ManMannequin({
 export function TShirt({ color, onLoadStart, onLoadEnd }: { color?: string, onLoadStart?: () => void, onLoadEnd?: () => void }) {
   return (
     <Model
-      url="https://drive.google.com/uc?export=download&id=19AxZ3IEWZqReB2uUT2bIj9yyyULVFvSK"
+      url="https://drive.google.com/uc?export=download&id=1jG4Vab8TbIwALOQTd-P2zo-di6JCRmzf"
       color={color}
       scale={1}
       position={[0, -1, 0]}
@@ -84,7 +84,7 @@ export function TShirt({ color, onLoadStart, onLoadEnd }: { color?: string, onLo
 export function Pants({ color, onLoadStart, onLoadEnd }: { color?: string, onLoadStart?: () => void, onLoadEnd?: () => void }) {
   return (
     <Model
-      url="https://drive.google.com/uc?export=download&id=1sWiOonCianK04gf4RWKy9sXCLddyxSnv"
+      url="https://drive.google.com/uc?export=download&id=1FwQpvuenUe8BAcZXtSUsovwDCkcqPovt"
       color={color}
       scale={1}
       position={[0, -1.0, 0]}

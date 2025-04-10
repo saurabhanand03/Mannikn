@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "lib": ["es2020"],
+    "types": ["node"],
+    "target": "es2020",
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "outDir": "lib",
+    "rootDir": "src",
+    "moduleResolution": "node",
+    "strict": true,
+    "skipLibCheck": true        
+  },
+  "exclude": [
+    "../node_modules",
+    "../**/node_modules",
+    "../app",
+    "../src",
+    "**/*.test.ts"
+  ]
+}

@@ -6,6 +6,7 @@ import { onAuthStateChanged, User, initializeAuth, getReactNativePersistence } f
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Platform } from 'react-native';
 import { browserSessionPersistence } from 'firebase/auth';
+import { getFunctions } from "firebase/functions";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -23,6 +24,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
 const db = getFirestore(firebaseApp);
+export const functions = getFunctions(firebaseApp);
 const persistence =
   Platform.OS === "web"
     ? browserSessionPersistence

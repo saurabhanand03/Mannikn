@@ -9,29 +9,40 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from "react-native";
+import { httpsCallable } from "firebase/functions";
+import { functions } from "../../firebase"; // adjust path if needed
 
 export default function ExploreScreen() {
   const [messages, setMessages] = useState<{ id: number; sender: string; text: string }[]>([]);
   const [input, setInput] = useState("");
 
-  const sendMessage = () => {
+  const sendMessage = async () => {
     if (input.trim() === "") return;
 
-    // Add the user's message to the conversation
     const userMessage = { id: Date.now(), sender: "user", text: input };
     setMessages((prevMessages) => [...prevMessages, userMessage]);
+    setInput("");
 
-    // Simulate an AI response
-    setTimeout(() => {
+    try {
+      const askStylist = httpsCallable(functions, "askStylist");
+      const result = await askStylist({ prompt: input });
+      const data = result.data as { reply: string };
+
       const aiMessage = {
         id: Date.now() + 1,
         sender: "ai",
-        text: `You said: "${input}"`,
+        text: data.reply || "Hmm, I didn’t quite catch that 🤔",
       };
       setMessages((prevMessages) => [...prevMessages, aiMessage]);
-    }, 1000);
-
-    setInput(""); // Clear the input field
+    } catch (error) {
+      console.error("askStylist error:", error);
+      const errorMessage = {
+        id: Date.now() + 1,
+        sender: "ai",
+        text: "Oops! Something went wrong. 😞",
+      };
+      setMessages((prevMessages) => [...prevMessages, errorMessage]);
+    }
   };
 
   return (
@@ -67,7 +78,7 @@ export default function ExploreScreen() {
           style={styles.input}
           value={input}
           onChangeText={setInput}
-          placeholder="Type a message..."
+          placeholder="Ask your stylist..."
         />
         <TouchableOpacity style={styles.sendButton} onPress={sendMessage}>
           <Text style={styles.sendButtonText}>Send</Text>
