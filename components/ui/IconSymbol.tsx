@@ -18,6 +18,7 @@ const MAPPING = {
   'wardrobe': 'shirt',
   'outfits': 'bookmark',
   'explore': 'magnifying-glass',
+  'analyze': 'message',
   'profile': 'user',
 } as Partial<
   Record<

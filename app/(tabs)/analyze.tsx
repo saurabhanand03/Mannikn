@@ -12,7 +12,7 @@ import {
 import { httpsCallable } from "firebase/functions";
 import { functions } from "../../firebase"; // adjust path if needed
 
-export default function ExploreScreen() {
+export default function AnalyzeScreen() {
   const [messages, setMessages] = useState<{ id: number; sender: string; text: string }[]>([]);
   const [input, setInput] = useState("");
 

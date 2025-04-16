@@ -3,7 +3,7 @@
  */
 import React from "react";
 import { render, waitFor } from "@testing-library/react";
-import { Model } from "../../components/Mannequin";
+import { Model } from "../components/Mannequin";
 import { useGLTF } from "@react-three/drei";
 
 // --- Suppress <primitive> warnings ---

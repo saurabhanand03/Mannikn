@@ -24,7 +24,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         if (currentUser) {
           router.push("/"); // Navigate to Home if logged in
         } else {
-          router.push("/explore"); // Navigate to Explore/Login if not logged in
+          router.push("/analyze"); // Navigate to Analyze/Login if not logged in
         }
       }
     });
