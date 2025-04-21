@@ -36,7 +36,7 @@ export default function LoginScreen() {
       .then((userCredential) => {
         const loggedInUser = userCredential.user;
         Alert.alert("Success", `Welcome back, ${loggedInUser.email}!`);
-        router.push("/"); // Redirect to Home or main screen
+        router.push("/"); 
       })
       .catch((error) => {
         Alert.alert("Login Error", error.message);
