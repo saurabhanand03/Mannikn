@@ -16,11 +16,18 @@ export function Model({
   scale = 1,
   position = [0, 0, 0],
   onLoadStart,
-  onLoadEnd
+  onLoadEnd,
 }: ModelProps) {
+  console.log("Model URL:", url);
+
   const { scene } = useGLTF(url, true);
 
   useEffect(() => {
+    if (!scene) {
+      console.error("Scene is undefined for URL:", url);
+      return;
+    }
+
     onLoadStart?.();
 
     scene.traverse((object) => {
@@ -36,7 +43,9 @@ export function Model({
     onLoadEnd?.();
   }, [scene, color]);
 
-  return <primitive object={scene} scale={scale} position={position} />;
+  return scene ? (
+    <primitive object={scene} scale={scale} position={position} />
+  ) : null;
 }
 
 export function ManMannequin({
@@ -71,7 +80,7 @@ export function ManMannequin({
 export function TShirt({ color, onLoadStart, onLoadEnd }: { color?: string, onLoadStart?: () => void, onLoadEnd?: () => void }) {
   return (
     <Model
-      url="https://drive.google.com/uc?export=download&id=1jG4Vab8TbIwALOQTd-P2zo-di6JCRmzf"
+      url="https://drive.google.com/uc?export=download&id=1-J7qjJlCkFd5SaFefpDxjKQebLUckYUk"
       color={color}
       scale={1}
       position={[0, -1, 0]}
@@ -84,7 +93,7 @@ export function TShirt({ color, onLoadStart, onLoadEnd }: { color?: string, onLo
 export function Pants({ color, onLoadStart, onLoadEnd }: { color?: string, onLoadStart?: () => void, onLoadEnd?: () => void }) {
   return (
     <Model
-      url="https://drive.google.com/uc?export=download&id=1FwQpvuenUe8BAcZXtSUsovwDCkcqPovt"
+      url="https://drive.google.com/uc?export=download&id=1H_dI9D9M5inrSb0Ki1b6Iny5nOV8tGCj"
       color={color}
       scale={1}
       position={[0, -1.0, 0]}
