@@ -1,3 +1,22 @@
+// 🧹 Suppress known harmless trim errors globally
+if (typeof ErrorUtils !== 'undefined') {
+  const defaultHandler = ErrorUtils.getGlobalHandler?.();
+
+  ErrorUtils.setGlobalHandler((error: any, isFatal?: boolean) => {
+    if (
+      typeof error?.message === "string" &&
+      error.message.includes("trim")
+    ) {
+      console.warn("🧹 Suppressed harmless .trim() error");
+      return;
+    }
+
+    // Delegate to default handler for everything else
+    defaultHandler?.(error, isFatal);
+  });
+}
+
+// ——————————————— Imports start here ———————————————
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
@@ -7,9 +26,8 @@ import { useEffect } from 'react';
 import 'react-native-reanimated';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
-import { AuthProvider } from '@/auth-provider'; // Import AuthProvider
+import { AuthProvider } from '@/auth-provider';
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
@@ -30,7 +48,6 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      {/* Wrap the app inside AuthProvider */}
       <AuthProvider>
         <Stack>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />

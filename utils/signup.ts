@@ -14,6 +14,20 @@ export async function signUpWithEmail(email: string, password: string) {
     uid: user.uid,
     email: user.email,
     createdAt: new Date(),
+    gender: "male", 
+    skinTone: "#fff", 
+    selectedOutfit: {
+      top: {
+        type: "Shirt",
+        size: "M",
+        color: "#00c0b0",
+      },
+      bottom: {
+        type: "Pant",
+        size: "M",
+        color: "#00c0b0",
+      },
+    },
   });
 
   return user;

@@ -35,19 +35,24 @@ export default function HomeScreen() {
     const fetchSelectedOutfit = async () => {
       const user = getAuth().currentUser;
       if (!user) return;
-
+  
       const userRef = doc(db, "users", user.uid);
       const snapshot = await getDoc(userRef);
-
+  
       if (snapshot.exists()) {
-        const outfit = snapshot.data().selectedOutfit;
-        if (outfit?.top?.color) setTopColor(outfit.top.color);
-        if (outfit?.bottom?.color) setBottomColor(outfit.bottom.color);
+        const outfit = snapshot.data().selectedOutfit || {};
+  
+        const topColor = outfit?.top?.color || "#00c0b0";     
+        const bottomColor = outfit?.bottom?.color || "#00c0b0";
+  
+        setTopColor(topColor);
+        setBottomColor(bottomColor);
       }
     };
-
+  
     fetchSelectedOutfit();
   }, []);
+  
 
   useEffect(() => {
     const fetchWardrobe = async () => {
