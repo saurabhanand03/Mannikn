@@ -5,6 +5,7 @@ import { doc, setDoc } from "firebase/firestore";
 import { useRouter } from "expo-router";
 import { auth, db } from "@/firebase";
 import { useAuth } from "@/auth-provider";
+import { signUpWithEmail } from "@/utils/signup";
 
 export default function SignUpScreen() {
   const router = useRouter();
@@ -20,25 +21,10 @@ export default function SignUpScreen() {
   }, [user]);
 
   async function handleSignUp() {
-    if (!email || !password) {
-      Alert.alert("Error", "Please enter both a valid email and password.");
-      return;
-    }
     try {
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      const newUser = userCredential.user;
-      // Create a new document in the "users" collection for the new user
-      await setDoc(doc(db, "users", newUser.uid), {
-        uid: newUser.uid,
-        email: newUser.email,
-        createdAt: new Date(),
-      });
+      const newUser = await signUpWithEmail(email, password);
       Alert.alert("Success", `Welcome ${newUser.email}!`);
-      router.push("/"); // Navigate to home after signup
+      router.push("/");
     } catch (error: any) {
       Alert.alert("Error", error.message);
     }
