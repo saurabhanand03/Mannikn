@@ -51,7 +51,8 @@ export default function AnalyzeScreen() {
       behavior={Platform.OS === "ios" ? "padding" : undefined}
     >
       {/* Messages List */}
-      <ScrollView style={styles.messagesContainer}>
+      <ScrollView style={styles.messagesContainer}
+      contentContainerStyle={{ paddingBottom: 50 }}>
         {messages.map((message) => (
           <View
             key={message.id}

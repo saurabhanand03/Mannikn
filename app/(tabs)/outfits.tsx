@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
         paddingVertical: 16,
     },
     card: {
-        width: (screenWidth / 2) - 16, // Adjust width for 2 cards per row with padding
+        width: (screenWidth / 2) - 16, 
         margin: 8,
         backgroundColor: '#FFFFFF',
         borderRadius: 10,
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     },
     image: {
         width: '100%',
-        height: 100, // Adjusted for better aspect ratio
+        height: 100, 
         resizeMode: 'cover',
     },
     cardTitle: {

@@ -71,7 +71,7 @@ export function ManMannequin({
 export function TShirt({ color, onLoadStart, onLoadEnd }: { color?: string, onLoadStart?: () => void, onLoadEnd?: () => void }) {
   return (
     <Model
-      url="https://drive.google.com/uc?export=download&id=1jG4Vab8TbIwALOQTd-P2zo-di6JCRmzf"
+      url="https://drive.google.com/uc?export=download&id=1dj8o_bjkW2Sc2gpyE0VWLJUbWZ_WSPak"
       color={color}
       scale={1}
       position={[0, -1, 0]}
