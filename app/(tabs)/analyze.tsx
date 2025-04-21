@@ -13,14 +13,25 @@ import { httpsCallable } from "firebase/functions";
 import { functions } from "@/firebase"; // adjust path if needed
 
 export default function AnalyzeScreen() {
-  const [messages, setMessages] = useState<{ id: number; sender: string; text: string }[]>([]);
+  // 1) Hard‑coded welcome message
+  const initialMessage = {
+    id: 0,
+    sender: "ai",
+    text: "Hi, I am the Mannikn AI stylist. I am here to answer any questions about your outfit."
+  };
+
+  // 2) Initialize messages state with that welcome message
+  const [messages, setMessages] = useState<
+    { id: number; sender: string; text: string }[]
+  >(() => [initialMessage]);
+
   const [input, setInput] = useState("");
 
   const sendMessage = async () => {
     if (input.trim() === "") return;
 
     const userMessage = { id: Date.now(), sender: "user", text: input };
-    setMessages((prevMessages) => [...prevMessages, userMessage]);
+    setMessages((prev) => [...prev, userMessage]);
     setInput("");
 
     try {
@@ -33,7 +44,7 @@ export default function AnalyzeScreen() {
         sender: "ai",
         text: data.reply || "Hmm, I didn’t quite catch that 🤔",
       };
-      setMessages((prevMessages) => [...prevMessages, aiMessage]);
+      setMessages((prev) => [...prev, aiMessage]);
     } catch (error) {
       console.error("askStylist error:", error);
       const errorMessage = {
@@ -41,7 +52,7 @@ export default function AnalyzeScreen() {
         sender: "ai",
         text: "Oops! Something went wrong. 😞",
       };
-      setMessages((prevMessages) => [...prevMessages, errorMessage]);
+      setMessages((prev) => [...prev, errorMessage]);
     }
   };
 
@@ -51,8 +62,10 @@ export default function AnalyzeScreen() {
       behavior={Platform.OS === "ios" ? "padding" : undefined}
     >
       {/* Messages List */}
-      <ScrollView style={styles.messagesContainer}
-      contentContainerStyle={{ paddingBottom: 50 }}>
+      <ScrollView
+        style={styles.messagesContainer}
+        contentContainerStyle={{ paddingBottom: 50 }}
+      >
         {messages.map((message) => (
           <View
             key={message.id}
