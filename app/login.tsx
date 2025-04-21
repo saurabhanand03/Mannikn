@@ -9,8 +9,8 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "@/firebase";
 import { useRouter } from "expo-router";
+import { auth } from "@/firebase";
 import { useAuth } from "@/auth-provider";
 
 export default function LoginScreen() {

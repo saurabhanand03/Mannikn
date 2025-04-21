@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getAuth } from 'firebase/auth';
-import { db } from '../../firebase'; 
+import { db } from '@/firebase'; 
 import { collection, addDoc, onSnapshot } from 'firebase/firestore';
 import { 
   View, 
@@ -62,9 +62,9 @@ export default function ClothingScreen() {
         {wardrobeItems.map((item) => {
           let iconSource;
           if (item.type === "Shirt") {
-            iconSource = require('../../assets/icons/black_shirt_icon.png');
+            iconSource = require('@/assets/icons/black_shirt_icon.png');
           } else if (item.type === "Pant") {
-            iconSource = require('../../assets/icons/black_pants_icon.png');
+            iconSource = require('@/assets/icons/black_pants_icon.png');
           } else {
             return null; // skip unknown types
           }

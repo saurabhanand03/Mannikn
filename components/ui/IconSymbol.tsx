@@ -1,7 +1,8 @@
 // This file is a fallback for using MaterialIcons on Android and web.
 
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
+// import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+// import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import { SymbolWeight } from 'expo-symbols';
 import React from 'react';
 import { useColorScheme, OpaqueColorValue, StyleProp, ViewStyle } from 'react-native';
@@ -14,12 +15,20 @@ const MAPPING = {
   // 'paperplane.fill': 'send',
   // 'chevron.left.forwardslash.chevron.right': 'code',
   // 'chevron.right': 'chevron-right',
-  'home': 'house',
-  'wardrobe': 'shirt',
-  'outfits': 'bookmark',
-  'explore': 'magnifying-glass',
-  'analyze': 'message',
-  'profile': 'user',
+  // FontAwesome6
+  // 'home': 'house',
+  // 'wardrobe': 'shirt',
+  // 'outfits': 'bookmark',
+  // 'explore': 'magnifying-glass',
+  // 'analyze': 'message',
+  // 'profile': 'user',
+  // Ionicons
+  'home': 'home-outline',
+  'wardrobe': 'shirt-outline',
+  'outfits': 'bookmarks-outline',
+  'explore': 'search-outline',
+  'analyze': 'chatbox-outline',
+  'profile': 'person-outline',
 } as Partial<
   Record<
     import('expo-symbols').SymbolViewProps['name'],
@@ -53,5 +62,6 @@ export function IconSymbol({
   // const borderColor = isDarkMode ? "white" : "black";
 
   // return <MaterialIcons color={color} size={size} name={MAPPING[name]} style={style} />;
-  return <FontAwesome6 name={MAPPING[name]} size={size} color={iconColor} style={style} />;
+  // return <FontAwesome6 name={MAPPING[name]} size={size} color={iconColor} style={style} />;
+  return <Ionicons name={MAPPING[name]} size={size} color={iconColor} style={style} />;
 }

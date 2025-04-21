@@ -5,10 +5,9 @@ import { ThemedView } from "@/components/ThemedView";
 import { useAuth } from "@/auth-provider";
 import { getAuth, signOut } from "firebase/auth";
 import { useRouter } from "expo-router";
-import { auth } from "../../firebase";
+import { auth, db } from "@/firebase";
 import React, { useEffect, useState } from "react";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { db } from "../../firebase";
 import { Picker } from "@react-native-picker/picker";
 import RNPickerSelect from "react-native-picker-select";
 import { Ionicons } from "@expo/vector-icons";
@@ -22,6 +21,8 @@ export default function ProfileScreen() {
   const [skinTone, setSkinTone] = useState("");
 
   const skinTones = [
+    // silver default color
+    { label: "Silver", color: "#C0C0C0" },
     { label: "Light", color: "#f3d7b6" },
     { label: "Tan", color: "#e0ac69" },
     { label: "Brown", color: "#c68642" },

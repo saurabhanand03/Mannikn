@@ -14,11 +14,12 @@ import { OrbitControls } from "@react-three/drei";
 import { ManMannequin, TShirt, Pants } from "@/components/Mannequin";
 import { THREE } from "expo-three";
 import { getAuth } from "firebase/auth";
-import { db } from "../../firebase";
+import { db } from "@/firebase";
 import { doc, getDoc, collection, getDocs, updateDoc, onSnapshot } from "firebase/firestore";
 import { Suspense } from "react";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
-
+import { useColorScheme } from "@/hooks/useColorScheme";
+import { Colors } from "@/constants/Colors";
 
 export default function HomeScreen() {
   const [topColor, setTopColor] = useState("#00c0b0");
@@ -28,8 +29,7 @@ export default function HomeScreen() {
   const [isLoading, setIsLoading] = useState(true);
   const [gender, setGender] = useState("male");
   const [skinTone, setSkinTone] = useState("#fff");
-
-
+  const colorScheme = useColorScheme();
 
   useEffect(() => {
     const fetchSelectedOutfit = async () => {
@@ -85,7 +85,12 @@ export default function HomeScreen() {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        { backgroundColor: Colors[colorScheme ?? "light"].background },
+      ]}
+    >
       {isLoading && <LoadingSpinner />}
       {/* Swap Outfit Button */}
       <TouchableOpacity 
@@ -148,9 +153,9 @@ export default function HomeScreen() {
               renderItem={({ item }) => {
                 let iconSource;
                 if (item.type === "Shirt") {
-                  iconSource = require("../../assets/icons/black_shirt_icon.png");
+                  iconSource = require("@/assets/icons/black_shirt_icon.png");
                 } else if (item.type === "Pant") {
-                  iconSource = require("../../assets/icons/black_pants_icon.png");
+                  iconSource = require("@/assets/icons/black_pants_icon.png");
                 } else {
                   return null;
                 }
@@ -214,7 +219,6 @@ function FollowCameraLight() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "black",
   },
   swapButton: {
     position: "absolute",
