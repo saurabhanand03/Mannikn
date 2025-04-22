@@ -28,14 +28,23 @@ export function Model({
       return;
     }
 
+    console.log("🎨 Color received by Model component:", color); // 👈 Log this
+
+
     onLoadStart?.();
+
+    const safeColor = typeof color === "string" && color.trim().length > 0 ? color : "#ffffff";
 
     scene.traverse((object) => {
       if ((object as THREE.Mesh).isMesh) {
         const mesh = object as THREE.Mesh;
         const material = mesh.material as THREE.MeshStandardMaterial;
         if (material && material.color) {
-          material.color.set(color);
+          try{
+            material.color.set(safeColor);
+          } catch (error) {
+            console.error("Error setting color:", safeColor, error);
+          }
         }
       }
     });
@@ -62,7 +71,7 @@ export function ManMannequin({
   const url =
     gender === "female"
       ? "https://drive.google.com/uc?export=download&id=1HbE7DI2Jj1LjUrjeVNCZM9ULmpglHCAg"
-      : "https://drive.google.com/uc?export=download&id=1pVhtzQ3hCMTHBp2aJ6nE3RMhSNbr0Krg"; // Your current male GLB
+      : "https://drive.google.com/uc?export=download&id=1pVhtzQ3hCMTHBp2aJ6nE3RMhSNbr0Krg"; 
 
   return (
     <Model
@@ -90,10 +99,25 @@ export function TShirt({ color, onLoadStart, onLoadEnd }: { color?: string, onLo
   );
 }
 
-export function Pants({ color, onLoadStart, onLoadEnd }: { color?: string, onLoadStart?: () => void, onLoadEnd?: () => void }) {
+export function Pants({
+  color,
+  gender = "male",
+  onLoadStart,
+  onLoadEnd,
+}: {
+  color?: string;
+  gender?: "male" | "female";
+  onLoadStart?: () => void;
+  onLoadEnd?: () => void;
+}) {
+  const url =
+    gender === "female"
+      ? "https://drive.google.com/uc?export=download&id=1SjmagynZ6ZX0cYIlJtQYpW6X5Nouun29"
+      : "https://drive.google.com/uc?export=download&id=1H_dI9D9M5inrSb0Ki1b6Iny5nOV8tGCj";
+
   return (
     <Model
-      url="https://drive.google.com/uc?export=download&id=1H_dI9D9M5inrSb0Ki1b6Iny5nOV8tGCj"
+      url={url}
       color={color}
       scale={1}
       position={[0, -1.0, 0]}

@@ -119,6 +119,7 @@ export default function HomeScreen() {
             />
             <Pants 
               color={bottomColor} 
+              gender={gender === "male" || gender === "female" ? gender : "male"}
               onLoadStart={() => setIsLoading(true)} 
               onLoadEnd={() => setIsLoading(false)} 
             />
