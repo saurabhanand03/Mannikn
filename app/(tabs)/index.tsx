@@ -114,6 +114,7 @@ export default function HomeScreen() {
           <group scale={[1.5, 1.5, 1.5]}>
             <TShirt 
               color={topColor} 
+              gender={gender === "male" || gender === "female" ? gender : "male"}
               onLoadStart={() => setIsLoading(true)} 
               onLoadEnd={() => setIsLoading(false)} 
             />
@@ -124,7 +125,7 @@ export default function HomeScreen() {
               onLoadEnd={() => setIsLoading(false)} 
             />
             <ManMannequin
-              gender={gender === "male" || gender === "female" ? gender : undefined}
+              gender={gender === "male" || gender === "female" ? gender : "undefined"}
               color={skinTone} 
               onLoadStart={() => setIsLoading(true)} 
               onLoadEnd={() => setIsLoading(false)} 
