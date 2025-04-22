@@ -110,7 +110,7 @@ export default function ProfileScreen() {
         <View style={styles.divider} />
 
         {/* Phone */}
-        <View style={styles.detailItem}>
+        {/* <View style={styles.detailItem}>
           <ThemedText type="defaultSemiBold" style={styles.detailLabel}>
             Phone
           </ThemedText>
@@ -118,16 +118,16 @@ export default function ProfileScreen() {
             {user.phoneNumber || "N/A"}
           </ThemedText>
         </View>
-        <View style={styles.divider} />
+        <View style={styles.divider} /> */}
 
         {/* Location */}
-        <View style={styles.detailItem}>
+        {/* <View style={styles.detailItem}>
           <ThemedText type="defaultSemiBold" style={styles.detailLabel}>
             Location
           </ThemedText>
           <ThemedText style={styles.detailValue}>N/A</ThemedText>
         </View>
-        <View style={styles.divider} />
+        <View style={styles.divider} /> */}
 
         {/* Gender Picker 
         <View style={styles.detailItem}>
